@@ -14,7 +14,8 @@ for inst, lang, kind, i, note in S:
     try:
         d = json.load(urllib.request.urlopen(q, timeout=20))
         out.append(dict(id=i, instrument=inst, lang=lang, kind=kind, url=u,
-                        title=d["title"], channel=d["author_name"], note=note))
+                        title=d["title"], channel=d["author_name"], note=note,
+                        thumb=d["thumbnail_url"].replace("/hqdefault.jpg", "/mqdefault.jpg")))
     except Exception as e:
         dead.append((u, str(e)))
     time.sleep(0.2)
