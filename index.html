@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>管樂入門 · 長笛、單簧管、法國號 YouTube 教學精選</title>
+<meta name="description" content="長笛、單簧管、法國號的 YouTube 入門教學精選：可依樂器、語言、類型篩選，勾選看過的影片追蹤進度，進度只存在你的手機。">
+<style>
+:root{--bg:#f6f4ee;--card:#fff;--ink:#1d2433;--mute:#6b7280;--line:#e4e0d4;--accent:#1f5fbf;--ok:#1f8a4c}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 -apple-system,"PingFang TC","Noto Sans TC",sans-serif}
+header{padding:28px 16px 8px;max-width:960px;margin:0 auto}
+h1{margin:0 0 4px;font-size:1.6rem}
+header p{margin:0;color:var(--mute)}
+.bar{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);padding:10px 16px}
+.bar-in{max-width:960px;margin:0 auto;display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center}
+.grp{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:999px;padding:5px 14px;font:inherit;font-size:.9rem;cursor:pointer}
+.chip[aria-pressed=true]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.prog{max-width:960px;margin:12px auto 0;padding:0 16px;display:flex;align-items:center;gap:10px;color:var(--mute);font-size:.9rem}
+.track{flex:1;height:8px;background:var(--line);border-radius:99px;overflow:hidden}
+.fill{height:100%;width:0;background:var(--ok);transition:width .3s}
+main{max-width:960px;margin:0 auto;padding:14px 16px 60px;display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(290px,1fr))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:8px}
+.card.done{opacity:.62}
+.tags{display:flex;gap:6px;flex-wrap:wrap;font-size:.75rem}
+.tag{padding:1px 9px;border-radius:99px;background:#eef2f9;color:#2a4a85}
+.tag.k{background:#fdf1e3;color:#8a5a14}
+.card h3{margin:0;font-size:1rem;line-height:1.4}
+.ch{color:var(--mute);font-size:.85rem}
+.note{font-size:.9rem;margin:0}
+.row{display:flex;gap:8px;align-items:center;margin-top:auto;flex-wrap:wrap}
+.btn{border:1px solid var(--line);background:#fff;border-radius:8px;padding:6px 12px;font:inherit;font-size:.88rem;color:var(--ink);text-decoration:none;cursor:pointer}
+.btn.p{background:var(--accent);border-color:var(--accent);color:#fff}
+label.chk{margin-left:auto;display:flex;gap:6px;align-items:center;font-size:.88rem;cursor:pointer}
+label.chk input{width:18px;height:18px;accent-color:var(--ok)}
+iframe{width:100%;aspect-ratio:16/9;border:0;border-radius:10px;background:#000}
+.empty{grid-column:1/-1;text-align:center;color:var(--mute);padding:40px 0}
+footer{max-width:960px;margin:0 auto;padding:0 16px 40px;color:var(--mute);font-size:.82rem}
+</style>
+</head>
+<body>
+<header>
+  <h1>🎷 管樂入門：長笛・單簧管・法國號</h1>
+  <p>挑一支樂器，從精選的 YouTube 教學裡選一支跟著練；看完就勾起來。</p>
+</header>
+<div class="bar"><div class="bar-in">
+  <div class="grp" id="f-inst"></div>
+  <div class="grp" id="f-lang"></div>
+  <div class="grp" id="f-kind"></div>
+</div></div>
+<div class="prog"><span id="ptext"></span><div class="track"><div class="fill" id="pfill"></div></div></div>
+<main id="list"></main>
+<footer>影片版權屬原頻道，本站只整理連結與簡介，播放在 YouTube。學習進度只存在這支手機的瀏覽器，不上傳、不需登入。連結以 YouTube oEmbed 驗證過存在；影片日後被下架的話，請回報原始碼 repo。</footer>
+<script src="data.js"></script>
+<script>
+const INST={all:"全部",flute:"長笛",clarinet:"單簧管",horn:"法國號"};
+const LANG={all:"全部語言",zh:"中文",en:"英文"};
+const KIND={all:"全部類型",video:"單集影片",playlist:"播放清單"};
+const F={inst:"all",lang:"all",kind:"all"};
+const KEY="winds-done-v1";
+let done={};try{done=JSON.parse(localStorage.getItem(KEY)||"{}")}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(done))}catch(e){}};
+const R=window.RESOURCES;
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function chips(id,map,key){
+  const el=document.getElementById(id);
+  el.innerHTML=Object.entries(map).map(([k,v])=>`<button class="chip" data-k="${k}" aria-pressed="${F[key]===k}">${v}</button>`).join("");
+  el.onclick=e=>{const b=e.target.closest("button");if(!b)return;F[key]=b.dataset.k;chips(id,map,key);render()};
+}
+function embedSrc(r){return r.kind==="playlist"
+  ?`https://www.youtube-nocookie.com/embed/videoseries?list=${r.id}`
+  :`https://www.youtube-nocookie.com/embed/${r.id}`}
+function render(){
+  const pool=R.filter(r=>(F.inst==="all"||r.instrument===F.inst));
+  const d=pool.filter(r=>done[r.id]).length;
+  document.getElementById("ptext").textContent=`${INST[F.inst]}進度 ${d} / ${pool.length}`;
+  document.getElementById("pfill").style.width=(pool.length?d/pool.length*100:0)+"%";
+  const rows=pool.filter(r=>(F.lang==="all"||r.lang===F.lang)&&(F.kind==="all"||r.kind===F.kind));
+  document.getElementById("list").innerHTML=rows.length?rows.map(r=>`
+  <article class="card ${done[r.id]?"done":""}" data-id="${r.id}">
+    <div class="tags"><span class="tag">${INST[r.instrument]}</span><span class="tag">${LANG[r.lang]}</span><span class="tag k">${r.kind==="playlist"?"播放清單":"單集"}</span></div>
+    <h3>${esc(r.title)}</h3>
+    <div class="ch">${esc(r.channel)}</div>
+    <p class="note">${esc(r.note)}</p>
+    <div class="slot"></div>
+    <div class="row">
+      <a class="btn p" href="${r.url}" target="_blank" rel="noopener">到 YouTube 看</a>
+      <button class="btn" data-act="prev">預覽</button>
+      <label class="chk"><input type="checkbox" ${done[r.id]?"checked":""}>看過了</label>
+    </div>
+  </article>`).join(""):`<div class="empty">這組條件沒有資源，換個篩選看看。</div>`;
+}
+document.getElementById("list").addEventListener("click",e=>{
+  const card=e.target.closest(".card");if(!card)return;
+  const r=R.find(x=>x.id===card.dataset.id);
+  if(e.target.dataset.act==="prev"){
+    const slot=card.querySelector(".slot");
+    if(slot.firstChild){slot.innerHTML="";e.target.textContent="預覽";}
+    else{slot.innerHTML=`<iframe src="${embedSrc(r)}" title="${esc(r.title)}" allow="accelerometer;encrypted-media;picture-in-picture" allowfullscreen loading="lazy"></iframe>`;e.target.textContent="收起預覽";}
+  }
+  if(e.target.matches('input[type=checkbox]')){
+    e.target.checked?done[r.id]=1:delete done[r.id];save();
+    card.classList.toggle("done",e.target.checked);
+    const pool=R.filter(x=>F.inst==="all"||x.instrument===F.inst);
+    const d=pool.filter(x=>done[x.id]).length;
+    document.getElementById("ptext").textContent=`${INST[F.inst]}進度 ${d} / ${pool.length}`;
+    document.getElementById("pfill").style.width=(d/pool.length*100)+"%";
+  }
+});
+chips("f-inst",INST,"inst");chips("f-lang",LANG,"lang");chips("f-kind",KIND,"kind");render();
+</script>
+</body>
+</html>
