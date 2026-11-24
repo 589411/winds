@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>管樂入門 · 長笛、單簧管、法國號 YouTube 教學精選</title>
-<meta name="description" content="長笛、單簧管、法國號的 YouTube 入門教學精選：可依樂器、語言、類型篩選，勾選看過的影片追蹤進度，進度只存在你的手機。">
+<title>樂器入門 · 七種管樂與弦樂的 YouTube 教學精選</title>
+<meta name="description" content="長笛、單簧管、薩克斯風、法國號，以及小提琴、中提琴、大提琴的 YouTube 入門教學精選：可依樂器、語言、類型篩選，勾選看過的影片追蹤進度，進度只存在你的手機。">
 <meta name="theme-color" content="#eceff2">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🎷%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,6 +14,7 @@
 :root{
   --paper:#eceff2; --paper-2:#dfe4e9; --ink:#121a24; --mute:#556171; --rule:#c3cbd4; --staff:#9aa5b1;
   --flute:#2f6485; --clarinet:#1c1c24; --horn:#8c5a0a;
+  --violin:#8f2f2a; --viola:#6e3a78; --cello:#55601a; --sax:#0f6b5a;
   --serif:"LXGW WenKai TC","Kaiti TC","BiauKai",serif;
   --sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
 }
@@ -30,13 +31,14 @@ h1{margin:0;font:700 clamp(2.1rem,8.6vw,4rem)/1.18 var(--serif);letter-spacing:.
 h1 .ph{display:inline-block}
 .lede{margin:18px 0 0;max-width:34em;color:var(--mute);font-size:1.02rem;text-wrap:pretty}
 
-/* ── 五線譜選擇器：三種樂器是譜上的三顆音符，高低對應音域 ── */
-.staff{position:relative;display:grid;grid-template-columns:repeat(4,1fr);margin-top:40px}
+/* ── 五線譜選擇器：七種樂器是譜上的七顆音符，高低對應最低音的高低 ── */
+.staff{position:relative;display:grid;grid-template-columns:repeat(8,1fr);margin-top:40px}
 .staff::before,.staff::after{content:"";position:absolute;top:30px;height:49px;background:var(--ink)}
 .staff::before{left:0;width:2px}
 .staff::after{right:0;width:7px;background:linear-gradient(90deg,var(--ink) 0 2px,transparent 2px 5px,var(--ink) 5px)}
 .pick{position:relative;border:0;background:none;padding:112px 4px 8px;text-align:center;cursor:pointer;--c:var(--ink)}
 .pick[data-k=flute]{--c:var(--flute)} .pick[data-k=clarinet]{--c:var(--clarinet)} .pick[data-k=horn]{--c:var(--horn)}
+.pick[data-k=violin]{--c:var(--violin)} .pick[data-k=viola]{--c:var(--viola)} .pick[data-k=cello]{--c:var(--cello)} .pick[data-k=sax]{--c:var(--sax)}
 .lines{position:absolute;left:0;right:0;top:0;height:108px;
   background:
    linear-gradient(var(--staff),var(--staff)) 0 30px/100% 1px no-repeat,
@@ -54,14 +56,18 @@ h1 .ph{display:inline-block}
 .pick[aria-pressed=true] .head::after{height:50px}
 .rest{position:absolute;left:50%;top:67px;width:24px;height:7px;margin-left:-12px;background:var(--mute);transition:background .15s}
 .pick[aria-pressed=true] .rest{background:var(--ink)}
-.name{display:block;font:700 1.3rem/1.3 var(--serif);color:var(--mute)}
+.name{display:block;font:700 1.12rem/1.3 var(--serif);color:var(--mute)}
 .pick[aria-pressed=true] .name{color:var(--c);text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:6px}
 .cnt{display:block;margin-top:2px;font-size:.82rem;color:var(--mute)}
 @media (prefers-reduced-motion:no-preference){
   .head{animation:settle .7s cubic-bezier(.2,.8,.3,1) both}
-  .pick:nth-child(2) .head{animation-delay:.12s}
-  .pick:nth-child(3) .head{animation-delay:.24s}
-  .pick:nth-child(4) .head{animation-delay:.36s}
+  .pick:nth-child(2) .head{animation-delay:.08s}
+  .pick:nth-child(3) .head{animation-delay:.16s}
+  .pick:nth-child(4) .head{animation-delay:.24s}
+  .pick:nth-child(5) .head{animation-delay:.32s}
+  .pick:nth-child(6) .head{animation-delay:.4s}
+  .pick:nth-child(7) .head{animation-delay:.48s}
+  .pick:nth-child(8) .head{animation-delay:.56s}
 }
 @keyframes settle{from{transform:translateY(-22px);opacity:0}to{transform:none;opacity:1}}
 
@@ -72,16 +78,20 @@ h1 .ph{display:inline-block}
 .opt{border:0;background:none;padding:6px 10px;margin-bottom:-1px;cursor:pointer;color:var(--mute);font-size:.92rem;border-bottom:2px solid transparent}
 .opt[aria-pressed=true]{color:var(--ink);font-weight:500;border-bottom-color:var(--ink)}
 .prog{display:flex;align-items:center;gap:12px;margin-left:auto;font-size:.9rem;color:var(--mute)}
-.dots{display:flex;flex-wrap:wrap;gap:4px;max-width:172px}
-.dot{width:8px;height:8px;border-radius:50%;border:1.5px solid var(--dc);flex:none}
+#ptext{white-space:nowrap}
+.dots{display:flex;flex-wrap:wrap;gap:3px;max-width:230px}
+.dot{width:7px;height:7px;border-radius:50%;border:1.5px solid var(--dc);flex:none}
 .dot.on{background:var(--dc)}
 @media (max-width:600px){.prog{margin-left:0;width:100%;padding:2px 10px 6px}}
+/* 窄螢幕：八顆分兩排，各排自帶五線，不畫小節線 */
+@media (max-width:699px){.staff{grid-template-columns:repeat(4,1fr);row-gap:6px}.staff::before,.staff::after{display:none}.name{font-size:1.05rem}}
 @media (max-width:699px){.bar{position:static}}
 
 /* ── 節目單：依樂器分組，左側色條就是那支樂器的材質色 ── */
 main{padding:8px 0 56px}
 .grp{margin-top:44px;padding-left:18px;border-left:4px solid var(--c);--c:var(--ink)}
 .grp[data-k=flute]{--c:var(--flute)} .grp[data-k=clarinet]{--c:var(--clarinet)} .grp[data-k=horn]{--c:var(--horn)}
+.grp[data-k=violin]{--c:var(--violin)} .grp[data-k=viola]{--c:var(--viola)} .grp[data-k=cello]{--c:var(--cello)} .grp[data-k=sax]{--c:var(--sax)}
 h2{margin:0;font:700 clamp(1.7rem,5vw,2.3rem)/1.2 var(--serif);color:var(--c)}
 .how{margin:6px 0 0;max-width:36em;color:var(--mute);font-size:.95rem}
 .list{list-style:none;margin:14px 0 0;padding:0}
@@ -115,8 +125,8 @@ footer p{margin:0;max-width:44em}
 <body>
 <div class="wrap">
   <header class="hero">
-    <h1><span class="ph">挑一支管樂器，</span><span class="ph">先吹出第一個音。</span></h1>
-    <p class="lede">長笛、單簧管、法國號各有一批入門教學，每一支都確認過連結還在。選一支跟著練，看完就勾起來。</p>
+    <h1><span class="ph">挑一支樂器，</span><span class="ph">先發出第一個音。</span></h1>
+    <p class="lede">管樂四種、弦樂三種，每種都有一批入門教學，每一支都確認過連結還在。選一支跟著練，看完就勾起來。</p>
     <div class="staff" id="staff" role="group" aria-label="選擇樂器"></div>
   </header>
 </div>
@@ -133,17 +143,21 @@ footer p{margin:0;max-width:44em}
 
 <script src="data.js"></script>
 <script>
-const ORDER=["flute","clarinet","horn"];
-const INST={all:"全部",flute:"長笛",clarinet:"單簧管",horn:"法國號"};
+const ORDER=["flute","violin","clarinet","sax","viola","cello","horn"];
+const INST={all:"全部",flute:"長笛",violin:"小提琴",clarinet:"單簧管",sax:"薩克斯風",viola:"中提琴",cello:"大提琴",horn:"法國號"};
 const HOW={
   flute:"氣流吹過吹口邊緣發聲，沒有簧片。先練口型與氣流。",
   clarinet:"單片簧片貼著吹嘴振動發聲。先練簧片的含法與穩定的氣。",
-  horn:"嘴唇在吹嘴裡振動發聲，同一指法能吹出好幾個音。先練穩定的長音。"
+  horn:"嘴唇在吹嘴裡振動發聲，同一指法能吹出好幾個音。先練穩定的長音。",
+  violin:"四條弦、用弓拉奏，沒有品格，音準靠耳朵與手指位置。先練持琴、持弓與空弦。",
+  viola:"比小提琴大一些、音低五度，譜用中音譜號。先練持琴姿勢與認譜號。",
+  cello:"坐著拉，琴立在地上，音域低而溫暖。先練坐姿、持弓與空弦。",
+  sax:"單片簧片搭金屬管身，常從中音薩克斯風開始。先練嘴型與吹出穩定的第一個音。"
 };
 const LANG={all:"全部語言",zh:"中文",en:"英文"};
 const KIND={all:"全部類型",video:"單集影片",playlist:"播放清單"};
 const LANGN={zh:"中文",en:"英文"};
-const COLOR={flute:"var(--flute)",clarinet:"var(--clarinet)",horn:"var(--horn)"};
+const COLOR=Object.fromEntries(ORDER.map(k=>[k,`var(--${k})`]));
 const F={inst:"all",lang:"all",kind:"all"};
 {const h=location.hash.slice(1);if(INST[h])F.inst=h}
 const KEY="winds-done-v1";
@@ -157,8 +171,8 @@ const embedSrc=r=>r.kind==="playlist"
   :`https://www.youtube-nocookie.com/embed/${r.id}`;
 const countOf=k=>k==="all"?R.length:R.filter(r=>r.instrument===k).length;
 
-/* 音符高低＝樂器音域：長笛最高、法國號最低 */
-const NOTE={flute:{y:36,s:"down"},clarinet:{y:54,s:"up"},horn:{y:72,s:"up"}};
+/* 音符高低＝樂器最低音的高低：長笛最高、法國號最低（y 皆落在線上或間上） */
+const NOTE={flute:{y:30,s:"down"},violin:{y:36,s:"down"},clarinet:{y:42,s:"down"},sax:{y:48,s:"down"},viola:{y:54,s:"up"},cello:{y:66,s:"up"},horn:{y:72,s:"up"}};
 function drawStaff(){
   document.getElementById("staff").innerHTML=Object.keys(INST).map(k=>{
     const mark=k==="all"?`<span class="rest"></span>`

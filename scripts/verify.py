@@ -3,7 +3,7 @@
 import json, sys, time, urllib.request, urllib.parse
 sys.path.insert(0, __import__('os').path.dirname(__file__))
 from seed import S
-INST = {"flute":"長笛","clarinet":"單簧管","horn":"法國號"}
+INST = {"flute":"長笛","clarinet":"單簧管","horn":"法國號","violin":"小提琴","viola":"中提琴","cello":"大提琴","sax":"薩克斯風"}
 def url(kind, i):
     return (f"https://www.youtube.com/playlist?list={i}" if kind=="playlist"
             else f"https://www.youtube.com/watch?v={i}")
