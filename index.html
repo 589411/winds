@@ -82,6 +82,8 @@ h1 .ph{display:inline-block}
 .dots{display:flex;flex-wrap:wrap;gap:3px;max-width:230px}
 .dot{width:7px;height:7px;border-radius:50%;border:1.5px solid var(--dc);flex:none}
 .dot.on{background:var(--dc)}
+.meter{display:block;width:172px;height:8px;margin:2px 0;border:1.5px solid var(--ink);border-radius:4px;overflow:hidden}
+.meter i{display:block;height:100%;background:var(--ink);transition:width .25s}
 @media (max-width:600px){.prog{margin-left:0;width:100%;padding:2px 10px 6px}}
 /* 窄螢幕：八顆分兩排，各排自帶五線，不畫小節線 */
 @media (max-width:699px){.staff{grid-template-columns:repeat(4,1fr);row-gap:6px}.staff::before,.staff::after{display:none}.name{font-size:1.05rem}}
@@ -196,7 +198,9 @@ function progress(){
   const pool=R.filter(r=>F.inst==="all"||r.instrument===F.inst);
   const d=pool.filter(r=>done[r.id]).length;
   document.getElementById("ptext").textContent=`${INST[F.inst]}　看過 ${d} / ${pool.length}`;
-  document.getElementById("dots").innerHTML=pool.map(r=>`<span class="dot${done[r.id]?" on":""}" style="--dc:${COLOR[r.instrument]}"></span>`).join("");
+  document.getElementById("dots").innerHTML=pool.length>40
+    ?`<span class="meter"><i style="width:${d/pool.length*100}%"></i></span>`
+    :pool.map(r=>`<span class="dot${done[r.id]?" on":""}" style="--dc:${COLOR[r.instrument]}"></span>`).join("");
 }
 function item(r){
   const th=thumbOf(r);
